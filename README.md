@@ -4,7 +4,7 @@
 <img height="200" src="./docs/images/logo.jpg" alt="logo"/>
 </p>
 
-Ciudad 3D es una plataforma para la visualización de información en 3D, a traves de figuras geográficas, del actual Código Urbanístico del Gobierno de la Ciudad de Buenos Aires.
+Ciudad 3D es una plataforma para la visualización de información en 3D, a traves de figuras geográficas, del actual Código Urbanístico del Gobierno de Ciudad del Este.
 
 # Indice
 
