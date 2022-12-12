@@ -4,9 +4,9 @@
 <img height="200" src="./docs/images/logo.jpg" alt="logo"/>
 </p>
 
-Ciudad 3D es una plataforma para la visualización de información en 3D, a traves de figuras geográficas, del actual Código Urbanístico del Gobierno de CDE.maki
+Ciudad 3D es una plataforma para la visualización de información en 3D, a traves de figuras geográficas, del actual Código Urbanístico del Gobierno de CDE.
 
-# Indice kkkkkkkkk
+# Indice 
 
 - [Ciudad 3D](#ciudad-3d)
   - [Nota del autor:](#nota-del-autor-)
