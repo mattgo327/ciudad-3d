@@ -17,18 +17,27 @@ import useStyles from './styles'
 
 const Home = ({ token }) => {
   const classes = useStyles()
+  const apiUrl = 'cambiar'
+  fetch(apiUrl)
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => {
+      console.log(error)
+    })
 
   const placeLat = useSelector(
-    (state) => state.seeker.place
-      && state.seeker.place.data
-      && state.seeker.place.data.coordenadas
-      && state.seeker.place.data.coordenadas.y
+    (state) =>
+      state.seeker.place &&
+      state.seeker.place.data &&
+      state.seeker.place.data.coordenadas &&
+      state.seeker.place.data.coordenadas.y
   )
   const placeLng = useSelector(
-    (state) => state.seeker.place
-      && state.seeker.place.data
-      && state.seeker.place.data.coordenadas
-      && state.seeker.place.data.coordenadas.x
+    (state) =>
+      state.seeker.place &&
+      state.seeker.place.data &&
+      state.seeker.place.data.coordenadas &&
+      state.seeker.place.data.coordenadas.x
   )
 
   return (
@@ -39,9 +48,7 @@ const Home = ({ token }) => {
         <Parcel />
         {placeLat && placeLng && (
           <>
-            <Marker
-              coords={{ lat: placeLat, lng: placeLng }}
-            />
+            <Marker coords={{ lat: placeLat, lng: placeLng }} />
           </>
         )}
       </Map>
@@ -49,10 +56,10 @@ const Home = ({ token }) => {
   )
 }
 Home.propTypes = {
-  token: PropTypes.string
+  token: PropTypes.string,
 }
 Home.defaultProps = {
-  token: null
+  token: null,
 }
 
 export default Home
