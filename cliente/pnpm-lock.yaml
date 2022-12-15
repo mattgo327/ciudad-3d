@@ -7,6 +7,7 @@ specifiers:
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^4.0.0
   leaflet: ^1.9.3
+  leaflet-mouse-position: ^1.2.0
   prettier: ^2.8.0
   prettier-plugin-svelte: ^2.8.1
   svelte: ^3.54.0
@@ -14,6 +15,7 @@ specifiers:
 
 dependencies:
   leaflet: 1.9.3
+  leaflet-mouse-position: 1.2.0
 
 devDependencies:
   '@sveltejs/adapter-auto': 1.0.0-next.91_erfcpd5wjw6nq2fayxkx23hrei
@@ -843,6 +845,10 @@ packages:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
     dev: true
+
+  /leaflet-mouse-position/1.2.0:
+    resolution: {integrity: sha512-iKS25GZDRdoKZn0O5sjTyNcBYrq/wenLiOidj4jJ5iD4SfhyqVj+bJHgBwuMxOlf8Vc/9B1ZPlqYV4QA97nyFg==}
+    dev: false
 
   /leaflet/1.9.3:
     resolution: {integrity: sha512-iB2cR9vAkDOu5l3HAay2obcUHZ7xwUBBjph8+PGtmW/2lYhbLizWtG7nTeYht36WfOslixQF9D/uSIzhZgGMfQ==}

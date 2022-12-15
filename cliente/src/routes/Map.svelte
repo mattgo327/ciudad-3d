@@ -19,42 +19,56 @@
 				.addTo(map);
 
 			leaflet
-				.marker([-25.49686780588511, -54.67757105827332])
+				.marker([-25.49685812194268, -54.67757642269135])
 				.addTo(map)
 				.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
 				.openPopup();
 			
 			/*test*/
 
-			/*
-			var points = [
-				{
-					"nombre":"centro",
-					"lat":-25.496887173767618,
-					"lng":-54.67760860919953
-				}
-			]
-
-			for (var i = 0;i < points.lenght; i++){
-				leaflet
-					.marker([points[i].lat, points[i].lng])
-					.addTo(map)
-					marker.bindPopup(points[i].nombre)
-					.openPopup();
-			}
-
-			console.log(points[0].lat);
-
-			var marker = new leaflet.marker([-25.49765, -54.67999])
-			.addTo(map);
-			marker.bindPopup(marker._latlng.lat + " " + marker._latlng.lng); 
-			*/
-
 			map.on('dblclick',function(e){
 				var coord = e;
 				console.log(coord.latlng.lat + " " + coord.latlng.lng);
+				leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
 			});
 
+			var a2 = [
+				[-25.497032432786852, -54.67801094055176],
+				[-25.497032432786852, -54.677742719650276],
+				[-25.49725032098642, -54.677726626396186],
+				[-25.497269688807265, -54.67795193195344],
+				[-25.497032432786852, -54.67801094055176]
+			]
+
+			var pol = leaflet.polygon(a2, {
+				mouseover: (e) => {
+					const layer = e.target;
+					console.log(e);
+					layer.setStyle({
+						fillOpacity: 0.7
+					})
+				},
+				mouseout: (e) => {
+					const layer = e.target;
+					console.log(e);
+					layer.setStyle({
+						fillOpacity: 0.7
+					})
+				}
+			}).addTo(map);
+
+			// https://www.youtube.com/watch?v=jW8pfxJEHsg 
+
+			/*map.on("mousemove", (e) => {
+
+				//console.log(e.latlng.lat);
+
+				if (e.latlng.lng > a2[0][1] && e.latlng.lng < a2[1][1] && e.latlng.lat > a2[2][0]){
+					//console.log(1);
+				}
+			});*/
+
+			
 			fetch("http://localhost:5173/plazacity.geojson").then((response) => response.json() )
 			.then((json) => {
 				leaflet.geoJSON(json)
