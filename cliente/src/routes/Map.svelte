@@ -19,10 +19,48 @@
 				.addTo(map);
 
 			leaflet
-				.marker([-25.49765, -54.67885])
+				.marker([-25.49686780588511, -54.67757105827332])
 				.addTo(map)
 				.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
 				.openPopup();
+			
+			/*test*/
+
+			/*
+			var points = [
+				{
+					"nombre":"centro",
+					"lat":-25.496887173767618,
+					"lng":-54.67760860919953
+				}
+			]
+
+			for (var i = 0;i < points.lenght; i++){
+				leaflet
+					.marker([points[i].lat, points[i].lng])
+					.addTo(map)
+					marker.bindPopup(points[i].nombre)
+					.openPopup();
+			}
+
+			console.log(points[0].lat);
+
+			var marker = new leaflet.marker([-25.49765, -54.67999])
+			.addTo(map);
+			marker.bindPopup(marker._latlng.lat + " " + marker._latlng.lng); 
+			*/
+
+			map.on('dblclick',function(e){
+				var coord = e;
+				console.log(coord.latlng.lat + " " + coord.latlng.lng);
+			});
+
+			fetch("http://localhost:5173/plazacity.geojson").then((response) => response.json() )
+			.then((json) => {
+				leaflet.geoJSON(json)
+				.addTo(map);
+			});
+			/*test*/
 		}
 	});
 
@@ -32,6 +70,7 @@
 			map.remove();
 		}
 	});
+
 </script>
 
 <div id="map" bind:this={mapElement} />
