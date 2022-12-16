@@ -26,7 +26,7 @@
 	function checkbox(element){
 		let id = element.srcElement.id;
 		let nombre = layers[parseInt(id)].nombre;
-		let mostrar_capa = layers[parseInt(id)].mostrar;
+		let mostrar_capa = layers[parseInt(id)].mostrar = element.srcElement.checked;
 
 		console.log(nombre + " " + id + " " + mostrar_capa);
 	}
