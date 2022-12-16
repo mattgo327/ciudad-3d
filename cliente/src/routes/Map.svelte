@@ -4,7 +4,27 @@
 
 	let mapElement;
 	let map;
+	// <test>
+	let select = false;
+	let a = {
+		selected:{
+			color: "red",
+			opacity: 100,
+			fillcolor:"red",
+			fillOpacity:1,
+			weight: 0.5
+		},
+		default:{
+			color: "blue",
+			opacity: 1,
+			fillcolor:"red",
+			fillOpacity:0.1,
+			weight: 0.5
+		}
+	}
 
+	let manyselect = 0;
+	// </test>
 	onMount(async () => {
 		if (browser) {
 			const leaflet = await import('leaflet');
@@ -31,52 +51,37 @@
 				console.log(coord.latlng.lat + " " + coord.latlng.lng);
 				leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
 			});
-
-			var a2 = [
-				[-25.497032432786852, -54.67801094055176],
-				[-25.497032432786852, -54.677742719650276],
-				[-25.49725032098642, -54.677726626396186],
-				[-25.497269688807265, -54.67795193195344],
-				[-25.497032432786852, -54.67801094055176]
-			]
-
-			var pol = leaflet.polygon(a2, {
-				mouseover: (e) => {
-					const layer = e.target;
-					console.log(e);
-					layer.setStyle({
-						fillOpacity: 0.7
-					})
-				},
-				mouseout: (e) => {
-					const layer = e.target;
-					console.log(e);
-					layer.setStyle({
-						fillOpacity: 0.7
-					})
-				}
-			}).addTo(map);
-
-			// https://www.youtube.com/watch?v=jW8pfxJEHsg 
-
-			/*map.on("mousemove", (e) => {
-
-				//console.log(e.latlng.lat);
-
-				if (e.latlng.lng > a2[0][1] && e.latlng.lng < a2[1][1] && e.latlng.lat > a2[2][0]){
-					//console.log(1);
-				}
-			});*/
-
 			
-			fetch("http://localhost:5173/plazacity.geojson").then((response) => response.json() )
+			fetch("http://localhost:5173/layers/plazacity.geojson").then((response) => response.json() )
 			.then((json) => {
 				leaflet.geoJSON(json)
 				.addTo(map);
+
+				var polygonsBlock = leaflet.geoJson(json, {
+					onEachFeature: popup,
+					style:a.default
+				}).addTo(map);
 			});
-			/*test*/
 		}
 	});
+
+	function popup (feature, layer){
+		layer.on({
+			click: (e) => {
+				select = !select;
+				if (select && manyselect == 0){
+					layer.setStyle(a.selected);
+					manyselect = 1;
+					to_do(e, layer, select);
+				}else{
+					layer.setStyle(a.default);
+					manyselect = 0;
+				}
+
+			}
+		});
+		
+	}
 
 	onDestroy(async () => {
 		if (map) {
@@ -84,6 +89,12 @@
 			map.remove();
 		}
 	});
+
+	function to_do(event, layer, is_selected){
+		var feature = event.target.feature;
+		layer.bindPopup(feature.properties.name);
+		
+	}
 
 </script>
 
