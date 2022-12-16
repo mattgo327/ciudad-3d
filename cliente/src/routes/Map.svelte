@@ -92,7 +92,7 @@
 
 	function to_do(event, layer, is_selected) {
 		var feature = event.target.feature;
-		layer.bindPopup(feature.properties.name);
+		layer.bindPopup(feature.properties.name + "<br><stroke>" + feature.properties.descripcion + "</stroke>");
 	}
 </script>
 
