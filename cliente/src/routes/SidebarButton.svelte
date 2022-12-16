@@ -5,7 +5,7 @@
 
 	const handleClick = () => {
 		section.update((value) => {
-			if (value) {
+			if (value === parseInt(sectionValue)) {
 				return 0;
 			} else {
 				return parseInt(sectionValue);

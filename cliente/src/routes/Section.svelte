@@ -1,5 +1,6 @@
 <script>
-	let sectionValue = 0;
+	export let description,
+		sectionValue = 0;
 </script>
 
 <div class="absolute left-16 z-20 flex h-full w-80 flex-col bg-white">
@@ -13,7 +14,7 @@
 				d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
 			/></svg
 		> -->
-		<h1 class="my-4 font-medium text-slate-500 ml-7">Datos básicos</h1>
+		<h1 class="my-4 font-medium text-slate-500 ml-7">{description}</h1>
 	</div>
 
 	<!-- En caso de no haber parcela seleccionada -->
@@ -34,12 +35,18 @@
   </div> -->
 
 	<!-- Normativas -->
-	<!-- <div class="hover:bg-slate-200 cursor-pointer rounded border-l-4 border-orange-500 bg-slate-100 m-2 ml-5 py-3 text-lg">
-    <p class="ml-3 text-slate-500">Catastro</p>
-  </div>
-  <div class="hover:bg-slate-200 cursor-pointer rounded border-l-4 border-red-500 bg-slate-100 m-2 ml-5 py-3 text-lg">
-    <p class="ml-3 text-slate-500">Manuales e Instructivos</p>
-  </div> -->
+	{#if sectionValue === 3}
+		<div
+			class="hover:bg-slate-200 cursor-pointer rounded border-l-4 border-orange-500 bg-slate-100 m-2 ml-5 py-3 text-lg"
+		>
+			<p class="ml-3 text-slate-500">Catastro</p>
+		</div>
+		<div
+			class="hover:bg-slate-200 cursor-pointer rounded border-l-4 border-red-500 bg-slate-100 m-2 ml-5 py-3 text-lg"
+		>
+			<p class="ml-3 text-slate-500">Manuales e Instructivos</p>
+		</div>
+	{/if}
 
 	<!-- Links de Normativa -->
 	<!-- <a href="twitter.com" class="text-blue-600 hover:text-blue-800 ml-7 mt-2">Ley de Catastro</a>
@@ -47,9 +54,11 @@
   <a href="twitter.com" class="text-blue-600 hover:text-blue-800 ml-7 mt-2">Ley de Catastro</a> -->
 
 	<!-- Capas -->
-	<!-- <label class="text-sm text-slate-500 ml-6 mt-5 align-middle flex items-center">
-    <input type="checkbox" class="mr-2"></input>
-    <div class="rounded bg-red-600 h-2 w-2 mr-2"></div>
-      Línea oficial
-  </label> -->
+	{#if sectionValue === 2}
+		<label class="text-sm text-slate-500 ml-6 mt-5 align-middle flex items-center">
+			<input type="checkbox" class="mr-2" />
+			<div class="rounded bg-red-600 h-2 w-2 mr-2" />
+			Línea oficial
+		</label>
+	{/if}
 </div>

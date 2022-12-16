@@ -6,6 +6,8 @@
 
 	let sectionValue;
 
+	const descriptions = ['Datos básicos', 'Capas', 'Normativas'];
+
 	section.subscribe((value) => {
 		sectionValue = value;
 	});
@@ -14,7 +16,7 @@
 <div class="w-screen h-screen flex">
 	<Sidebar />
 	{#if sectionValue}
-		<Section {sectionValue} />
+		<Section description={descriptions[sectionValue - 1]} {sectionValue} />
 	{/if}
 	<Map />
 </div>
