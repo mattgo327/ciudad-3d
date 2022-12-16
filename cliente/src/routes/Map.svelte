@@ -1,6 +1,7 @@
 <script>
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
+	import { informacionParcela, section } from '../store';
 
 	let mapElement;
 	let map;
@@ -91,8 +92,12 @@
 	});
 
 	function to_do(event, layer, is_selected) {
+		section.set(1);
 		var feature = event.target.feature;
-		layer.bindPopup(feature.properties.name + "<br><stroke>" + feature.properties.descripcion + "</stroke>");
+		informacionParcela.set(feature.properties);
+		layer.bindPopup(
+			feature.properties.name + '<br><stroke>' + feature.properties.descripcion + '</stroke>'
+		);
 	}
 </script>
 

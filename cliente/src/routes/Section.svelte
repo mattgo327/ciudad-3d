@@ -1,8 +1,14 @@
 <script>
+	import { informacionParcela } from '../store';
+
+	let informacion;
+
+	informacionParcela.subscribe((value) => {
+		informacion = value;
+	});
+
 	export let description,
 		sectionValue = 0;
-
-	document.get
 </script>
 
 <div class="absolute left-16 z-20 flex h-full w-80 flex-col bg-white">
@@ -21,20 +27,21 @@
 
 	<!-- En caso de no haber parcela seleccionada -->
 	{#if sectionValue === 1}
-		<div class="border rounded-lg text-slate-500 p-10 m-10 ml-12">
-			<p class="text-center">Seleccione una parcela</p>
-		</div>
+		{#if informacion}
+			<div class="rounded bg-slate-100 py-5 px-2 my-3 mr-3 ml-5 flex justify-between">
+				<p class="text-slate-500 text-sm font-semibold">Nombre</p>
+				<p class="text-slate-500 text-sm">{informacion.name}</p>
+			</div>
+			<div class="rounded bg-slate-100 py-5 px-2 my-3 mr-3 ml-5 flex justify-between">
+				<p class="text-slate-500 text-sm font-semibold">Descripción</p>
+				<p class="text-slate-500 text-sm">{informacion.descripcion}</p>
+			</div>
+		{:else}
+			<div class="border rounded-lg text-slate-500 p-10 m-10 ml-12">
+				<p class="text-center">Seleccione una parcela</p>
+			</div>
+		{/if}
 	{/if}
-
-	<!-- Datos de parcela seleccionada -->
-	<!-- <div class="rounded bg-slate-100 py-5 px-2 my-3 mr-3 ml-5 flex justify-between">
-    <p class="text-slate-500 text-sm font-semibold">Dirección</p>
-    <p class="text-slate-500 text-sm">San Sebastián</p>
-  </div>
-  <div class="rounded bg-slate-100 py-5 px-2 my-3 mr-3 ml-5 flex justify-between">
-    <p class="text-slate-500 text-sm font-semibold">Dirección</p>
-    <p class="text-slate-500 text-sm">San Sebastián</p>
-  </div> -->
 
 	<!-- Normativas -->
 	{#if sectionValue === 3}
@@ -58,9 +65,14 @@
 	<!-- Capas -->
 	{#if sectionValue === 2}
 		<label class="text-sm text-slate-500 ml-6 mt-5 align-middle flex items-center">
-			<input type="checkbox" class="mr-2" id="checkbutton" on:click={() => {
-				alert("a");
-			}}/>
+			<input
+				type="checkbox"
+				class="mr-2"
+				id="checkbutton"
+				on:click={() => {
+					alert('a');
+				}}
+			/>
 			<div class="rounded bg-red-600 h-2 w-2 mr-2" />
 			Línea oficial
 		</label>
