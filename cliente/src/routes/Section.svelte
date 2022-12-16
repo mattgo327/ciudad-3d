@@ -1,6 +1,8 @@
 <script>
 	export let description,
 		sectionValue = 0;
+
+	document.get
 </script>
 
 <div class="absolute left-16 z-20 flex h-full w-80 flex-col bg-white">
@@ -56,7 +58,9 @@
 	<!-- Capas -->
 	{#if sectionValue === 2}
 		<label class="text-sm text-slate-500 ml-6 mt-5 align-middle flex items-center">
-			<input type="checkbox" class="mr-2" />
+			<input type="checkbox" class="mr-2" id="checkbutton" on:click={() => {
+				alert("a");
+			}}/>
 			<div class="rounded bg-red-600 h-2 w-2 mr-2" />
 			Línea oficial
 		</label>
