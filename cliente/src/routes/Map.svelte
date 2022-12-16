@@ -50,7 +50,7 @@
 			map.on('dblclick', function (e) {
 				var coord = e;
 				console.log(coord.latlng.lat + ' ' + coord.latlng.lng);
-				leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
+				//leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
 			});
 
 			fetch('http://localhost:5173/layers/plazacity.geojson')
@@ -95,9 +95,6 @@
 		section.set(1);
 		var feature = event.target.feature;
 		informacionParcela.set(feature.properties);
-		layer.bindPopup(
-			feature.properties.name + '<br><stroke>' + feature.properties.descripcion + '</stroke>'
-		);
 	}
 </script>
 
