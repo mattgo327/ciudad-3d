@@ -1,5 +1,5 @@
 <script>
-	let selected = 1;
+	let sectionValue = 0;
 </script>
 
 <div class="absolute left-16 z-20 flex h-full w-80 flex-col bg-white">
@@ -13,11 +13,11 @@
 				d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
 			/></svg
 		> -->
-		<h1 class="my-4 font-medium text-slate-500 ml-5">Datos básicos</h1>
+		<h1 class="my-4 font-medium text-slate-500 ml-7">Datos básicos</h1>
 	</div>
 
 	<!-- En caso de no haber parcela seleccionada -->
-	{#if selected === 1}
+	{#if sectionValue === 1}
 		<div class="border rounded-lg text-slate-500 p-10 m-10 ml-12">
 			<p class="text-center">Seleccione una parcela</p>
 		</div>
