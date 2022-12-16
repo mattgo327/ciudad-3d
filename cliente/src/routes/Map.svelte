@@ -7,21 +7,21 @@
 	// <test>
 	let select = false;
 	let a = {
-		selected:{
-			color: "red",
+		selected: {
+			color: 'red',
 			opacity: 100,
-			fillcolor:"red",
-			fillOpacity:1,
+			fillcolor: 'red',
+			fillOpacity: 1,
 			weight: 0.5
 		},
-		default:{
-			color: "blue",
+		default: {
+			color: 'blue',
 			opacity: 1,
-			fillcolor:"red",
-			fillOpacity:0.1,
+			fillcolor: 'red',
+			fillOpacity: 0.1,
 			weight: 0.5
 		}
-	}
+	};
 
 	let manyselect = 0;
 	// </test>
@@ -43,44 +43,44 @@
 				.addTo(map)
 				.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
 				.openPopup();
-			
+
 			/*test*/
 
-			map.on('dblclick',function(e){
+			map.on('dblclick', function (e) {
 				var coord = e;
-				console.log(coord.latlng.lat + " " + coord.latlng.lng);
+				console.log(coord.latlng.lat + ' ' + coord.latlng.lng);
 				leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
 			});
-			
-			fetch("http://localhost:5173/layers/plazacity.geojson").then((response) => response.json() )
-			.then((json) => {
-				leaflet.geoJSON(json)
-				.addTo(map);
 
-				var polygonsBlock = leaflet.geoJson(json, {
-					onEachFeature: popup,
-					style:a.default
-				}).addTo(map);
-			});
+			fetch('http://localhost:5173/layers/plazacity.geojson')
+				.then((response) => response.json())
+				.then((json) => {
+					leaflet.geoJSON(json).addTo(map);
+
+					var polygonsBlock = leaflet
+						.geoJson(json, {
+							onEachFeature: popup,
+							style: a.default
+						})
+						.addTo(map);
+				});
 		}
 	});
 
-	function popup (feature, layer){
+	function popup(feature, layer) {
 		layer.on({
 			click: (e) => {
 				select = !select;
-				if (select && manyselect == 0){
+				if (select && manyselect == 0) {
 					layer.setStyle(a.selected);
 					manyselect = 1;
 					to_do(e, layer, select);
-				}else{
+				} else {
 					layer.setStyle(a.default);
 					manyselect = 0;
 				}
-
 			}
 		});
-		
 	}
 
 	onDestroy(async () => {
@@ -90,20 +90,14 @@
 		}
 	});
 
-	function to_do(event, layer, is_selected){
+	function to_do(event, layer, is_selected) {
 		var feature = event.target.feature;
 		layer.bindPopup(feature.properties.name);
-		
 	}
-
 </script>
 
-<div id="map" bind:this={mapElement} />
+<div class="h-full w-full z-10" bind:this={mapElement} />
 
 <style>
 	@import 'leaflet/dist/leaflet.css';
-	#map {
-		width: 800px;
-		height: 500px;
-	}
 </style>
