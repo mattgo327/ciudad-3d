@@ -2,4 +2,4 @@
 	import Map from './Map.svelte';
 </script>
 
-<Map />
+<div class="w-screen h-screen flex"><Map /></div>
