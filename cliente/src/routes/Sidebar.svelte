@@ -1,9 +1,8 @@
 <script>
-	import SideBarButton from './SidebarButton.svelte';
 	import SidebarButton from './SidebarButton.svelte';
 </script>
 
-<div class="z-20 flex h-full w-20 flex-col bg-white shadow-md">
+<div class="z-30 flex h-full w-20 flex-col bg-white shadow-md">
 	<img
 		src="https://www.mcde.gov.py/assets/images/logo.svg"
 		class="mb-5 mt-2 p-2"

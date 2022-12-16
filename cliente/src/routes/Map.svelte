@@ -96,7 +96,7 @@
 	}
 </script>
 
-<div class="h-full w-full" bind:this={mapElement} />
+<div class="h-full w-full z-10" bind:this={mapElement} />
 
 <style>
 	@import 'leaflet/dist/leaflet.css';
