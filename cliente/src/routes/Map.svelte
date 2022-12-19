@@ -29,7 +29,6 @@
 	onMount(async () => {
 		if (browser) {
 			const leaflet = await import('leaflet');
-
 			map = leaflet.map(mapElement).setView([-25.49765, -54.67885], 1700);
 
 			leaflet
@@ -66,6 +65,8 @@
 						.addTo(map);
 				});
 		}
+		const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
+		new osmBuildings(map).load();
 	});
 
 	function popup(feature, layer) {
