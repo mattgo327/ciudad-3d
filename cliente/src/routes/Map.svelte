@@ -64,9 +64,9 @@
 						})
 						.addTo(map);
 				});
+			const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
+			new osmBuildings(map).load();
 		}
-		const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
-		new osmBuildings(map).load();
 	});
 
 	function popup(feature, layer) {
