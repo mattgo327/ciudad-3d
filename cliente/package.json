@@ -25,6 +25,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"leaflet": "^1.9.3"
+		"leaflet": "^1.9.3",
+		"osmbuildings": "0.2.0-b"
 	}
 }

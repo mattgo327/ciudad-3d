@@ -29,7 +29,6 @@
 	onMount(async () => {
 		if (browser) {
 			const leaflet = await import('leaflet');
-
 			map = leaflet.map(mapElement).setView([-25.49765, -54.67885], 1700);
 
 			leaflet
@@ -53,7 +52,7 @@
 				//leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
 			});
 
-			fetch('http://localhost:5173/layers/plazacity.geojson')
+			fetch('https://ciudad-3d-cde.vercel.app/layers/plazacity.geojson')
 				.then((response) => response.json())
 				.then((json) => {
 					leaflet.geoJSON(json).addTo(map);
@@ -66,6 +65,8 @@
 						.addTo(map);
 				});
 		}
+		const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
+		new osmBuildings(map).load();
 	});
 
 	function popup(feature, layer) {
