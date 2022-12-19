@@ -53,7 +53,7 @@
 				leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
 			});
 
-			fetch('http://localhost:5173/layers/plazacity.geojson')
+			fetch('https://ciudad-3d-cde.vercel.app/layers/plazacity.geojson')
 				.then((response) => response.json())
 				.then((json) => {
 					leaflet.geoJSON(json).addTo(map);
