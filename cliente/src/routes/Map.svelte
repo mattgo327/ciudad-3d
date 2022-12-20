@@ -2,6 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { informacionParcela, section } from '../store';
+	import { assets } from '$app/paths';
 
 	let mapElement;
 	let map;
@@ -52,7 +53,7 @@
 				leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
 			});
 
-			fetch('https://ciudad-3d-cde.vercel.app/layers/plazacity.geojson')
+			fetch(`${assets}/layers/plazacity.geojson`)
 				.then((response) => response.json())
 				.then((json) => {
 					leaflet.geoJSON(json).addTo(map);
@@ -64,8 +65,12 @@
 						})
 						.addTo(map);
 				});
-			const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
-			new osmBuildings(map).load();
+			try {
+				const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
+				new osmBuildings(map).load();
+			} catch (error) {
+				console.log(error);
+			}
 		}
 	});
 
