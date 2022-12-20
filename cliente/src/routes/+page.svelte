@@ -16,7 +16,7 @@
 <div class="w-screen h-screen flex">
 	<Sidebar />
 	{#if sectionValue}
-		<Section description={descriptions[sectionValue - 1]} {sectionValue} />
+		<Section sectionTitle={descriptions[sectionValue - 1]} {sectionValue} />
 	{/if}
 	<Map />
 </div>
