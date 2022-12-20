@@ -2,11 +2,11 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { informacionParcela, section } from '../store';
+	import { assets } from '$app/paths';
 
 	let mapElement;
 	let map;
 	// <test>
-	let layers = []
 	let select = false;
 	let a = {
 		selected: {
@@ -39,12 +39,6 @@
 				})
 				.addTo(map);
 
-			leaflet
-				.marker([-25.49685812194268, -54.67757642269135])
-				.addTo(map)
-				.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-				.openPopup();
-
 			/*test*/
 
 			map.on('dblclick', function (e) {
@@ -53,30 +47,32 @@
 				//leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
 			});
 
-			fetch('http://localhost:5173/layers/plazacity.geojson')
+			fetch(`${assets}/layers/plazacity.geojson`)
 				.then((response) => response.json())
-				.then((json) => {
-					layers.push(json);
-					leaflet.geoJSON(layers[0]).addTo(map);
-					var polygonsBlock = leaflet.geoJson(layers[0], {
-						onEachFeature: popup,
-						style: a.default
-					})
-					.addTo(map);
+				.then((value) => {
+					leaflet.geoJSON(value).addTo(map);
+					//polygonsBlock
+					leaflet
+						.geoJson(value, {
+							onEachFeature: popup,
+							style: a.default
+						})
+						.addTo(map);
 				});
 
-			fetch('http://localhost:5173/layers/routes.geojson')
-			.then((response) => response.json())
-			.then((json) => {
-				layers.push(json);
-				// Valor de la segunda capa
-				leaflet.geoJSON(layers[1]).addTo(map);
-				var polygonsBlock = leaflet.geoJson(layers[0], {
-					onEachFeature: popup,
-					style: a.default
-				})
-				.addTo(map);
-			});
+			fetch(`${assets}/layers/routes.geojson`)
+				.then((response) => response.json())
+				.then((value) => {
+					// Valor de la segunda capa
+					leaflet.geoJSON(value).addTo(map);
+					//polygonsBlock
+					leaflet
+						.geoJson(value, {
+							onEachFeature: popup,
+							style: a.default
+						})
+						.addTo(map);
+				});
 
 			const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
 			new osmBuildings(map).load();
@@ -101,7 +97,6 @@
 
 	onDestroy(async () => {
 		if (map) {
-			console.log('Unloading Leaflet map.');
 			map.remove();
 		}
 	});
