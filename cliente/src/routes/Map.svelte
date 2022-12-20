@@ -67,7 +67,7 @@
 						.addTo(map);
 				});
 
-			fetch('http://localhost:5173/layers/routes.geojson')
+			fetch(`${assets}/layers/routes.geojson`)
 				.then((response) => response.json())
 				.then((json) => {
 					layers.push(json);
