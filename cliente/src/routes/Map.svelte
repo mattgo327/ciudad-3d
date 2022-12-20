@@ -5,9 +5,33 @@
 
 	let mapElement;
 	let map;
-	// <test>
-	let layers = []
+
+	let manyselect = 0;
 	let select = false;
+
+	let layers = [
+		{
+			url:"http://localhost:5173/layers/plazacity.geojson",
+			json:{},
+			mostrar: false
+		},
+		{
+			url:"http://localhost:5173/layers/routes.geojson",
+			json:{},
+			mostrar: false
+		},
+		{
+			url:"http://localhost:5173/layers/casa1.geojson",
+			json:{},
+			mostrar: false
+		},
+		{
+			url:"http://localhost:5173/layers/casa2.geojson",
+			json:{},
+			mostrar: true
+		}
+	]
+	
 	let a = {
 		selected: {
 			color: 'red',
@@ -16,19 +40,17 @@
 			fillOpacity: 1,
 			weight: 0.5
 		},
-		default: {
+		default:{
 			color: 'blue',
-			opacity: 1,
+			opacity: 0,
 			fillcolor: 'red',
-			fillOpacity: 0.1,
+			fillOpacity: 0,
 			weight: 0.5
 		}
 	};
-
-	let manyselect = 0;
-	// </test>
 	onMount(async () => {
 		if (browser) {
+			/////////////// LEAFLET ////////////////
 			const leaflet = await import('leaflet');
 			map = leaflet.map(mapElement).setView([-25.49765, -54.67885], 1700);
 
@@ -39,47 +61,73 @@
 				})
 				.addTo(map);
 
+			////////////////////// TESTING ////////////////////////
+			
+			/* 
 			leaflet
 				.marker([-25.49685812194268, -54.67757642269135])
 				.addTo(map)
 				.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
 				.openPopup();
 
-			/*test*/
-
 			map.on('dblclick', function (e) {
 				var coord = e;
 				console.log(coord.latlng.lat + ' ' + coord.latlng.lng);
-				//leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
 			});
+			*/
+			
+			/////////////////////// FETCH ////////////////////////
 
 			fetch('http://localhost:5173/layers/plazacity.geojson')
 				.then((response) => response.json())
 				.then((json) => {
-					layers.push(json);
-					leaflet.geoJSON(layers[0]).addTo(map);
-					var polygonsBlock = leaflet.geoJson(layers[0], {
-						onEachFeature: popup,
-						style: a.default
-					})
-					.addTo(map);
+					layers[0].json = json;
+					if (is_active(0)){
+						leaflet.geoJSON(layers[0].json,{
+							onEachFeature: popup,
+							style: a.default
+						}).addTo(map);
+						change_osmb(layers[0].url);
+					}
 				});
 
 			fetch('http://localhost:5173/layers/routes.geojson')
 			.then((response) => response.json())
 			.then((json) => {
-				layers.push(json);
-				// Valor de la segunda capa
-				leaflet.geoJSON(layers[1]).addTo(map);
-				var polygonsBlock = leaflet.geoJson(layers[0], {
-					onEachFeature: popup,
-					style: a.default
-				})
-				.addTo(map);
+				layers[1].json = json;
+				if (is_active(1)) leaflet.geoJSON(layers[1].json).addTo(map);
+				
 			});
 
-			const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
-			new osmBuildings(map).load();
+			fetch('http://localhost:5173/layers/casa1.geojson')
+			.then((response) => response.json())
+			.then((json) => {
+				layers[2].json = json;
+				if (is_active(2)){
+					leaflet.geoJSON(layers[2].json,{
+						onEachFeature: popup,
+						style: a.default
+					}).addTo(map);
+					change_osmb(layers[2].url);
+				}
+			});
+
+			fetch('http://localhost:5173/layers/casa2.geojson')
+			.then((response) => response.json())
+			.then((json) => {
+				layers[3].json = json;
+				if (is_active(3)){
+					leaflet.geoJSON(layers[3].json,{
+						onEachFeature: popup,
+						style: a.default
+					}).addTo(map);
+					change_osmb(layers[3].url);
+				}
+			});
+
+			/////////////////////// OSMB ////////////////////////
+			change_osmb();
+			
 		}
 	});
 
@@ -90,13 +138,22 @@
 				if (select && manyselect == 0) {
 					layer.setStyle(a.selected);
 					manyselect = 1;
-					to_do(e, layer, select);
+					to_do(e);
 				} else {
 					layer.setStyle(a.default);
 					manyselect = 0;
 				}
 			}
 		});
+	}
+
+	async function change_osmb(url_=null){
+		const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
+		if (url_ == null){
+			new osmBuildings(map).load();
+		}else{
+			new osmBuildings(map).load(url_);
+		}
 	}
 
 	onDestroy(async () => {
@@ -106,10 +163,14 @@
 		}
 	});
 
-	function to_do(event, layer, is_selected) {
+	function to_do(ev) {
 		section.set(1);
-		var feature = event.target.feature;
+		var feature = ev.target.feature;
 		informacionParcela.set(feature.properties);
+	}
+
+	function is_active(indice){
+		return layers[indice].mostrar
 	}
 </script>
 
