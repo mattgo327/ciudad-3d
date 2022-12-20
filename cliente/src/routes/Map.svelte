@@ -12,27 +12,27 @@
 
 	let layers = [
 		{
-			url:"http://localhost:5173/layers/plazacity.geojson",
-			json:{},
+			url: 'http://localhost:5173/layers/plazacity.geojson',
+			json: {},
 			mostrar: false
 		},
 		{
-			url:"http://localhost:5173/layers/routes.geojson",
-			json:{},
+			url: 'http://localhost:5173/layers/routes.geojson',
+			json: {},
 			mostrar: false
 		},
 		{
-			url:"http://localhost:5173/layers/casa1.geojson",
-			json:{},
+			url: 'http://localhost:5173/layers/casa1.geojson',
+			json: {},
 			mostrar: false
 		},
 		{
-			url:"http://localhost:5173/layers/casa2.geojson",
-			json:{},
+			url: 'http://localhost:5173/layers/casa2.geojson',
+			json: {},
 			mostrar: true
 		}
-	]
-	
+	];
+
 	let a = {
 		selected: {
 			color: 'red',
@@ -41,7 +41,7 @@
 			fillOpacity: 1,
 			weight: 0.5
 		},
-		default:{
+		default: {
 			color: 'blue',
 			opacity: 0,
 			fillcolor: 'red',
@@ -66,8 +66,7 @@
 				var coord = e;
 				console.log(coord.latlng.lat + ' ' + coord.latlng.lng);
 			});
-			*/
-			
+
 			/////////////////////// FETCH ////////////////////////
 
 			fetch(`${assets}/layers/plazacity.geojson`)
@@ -98,34 +97,37 @@
 				});
 
 			fetch('http://localhost:5173/layers/casa1.geojson')
-			.then((response) => response.json())
-			.then((json) => {
-				layers[2].json = json;
-				if (is_active(2)){
-					leaflet.geoJSON(layers[2].json,{
-						onEachFeature: popup,
-						style: a.default
-					}).addTo(map);
-					change_osmb(layers[2].url);
-				}
-			});
+				.then((response) => response.json())
+				.then((json) => {
+					layers[2].json = json;
+					if (is_active(2)) {
+						leaflet
+							.geoJSON(layers[2].json, {
+								onEachFeature: popup,
+								style: a.default
+							})
+							.addTo(map);
+						change_osmb(layers[2].url);
+					}
+				});
 
 			fetch('http://localhost:5173/layers/casa2.geojson')
-			.then((response) => response.json())
-			.then((json) => {
-				layers[3].json = json;
-				if (is_active(3)){
-					leaflet.geoJSON(layers[3].json,{
-						onEachFeature: popup,
-						style: a.default
-					}).addTo(map);
-					change_osmb(layers[3].url);
-				}
-			});
+				.then((response) => response.json())
+				.then((json) => {
+					layers[3].json = json;
+					if (is_active(3)) {
+						leaflet
+							.geoJSON(layers[3].json, {
+								onEachFeature: popup,
+								style: a.default
+							})
+							.addTo(map);
+						change_osmb(layers[3].url);
+					}
+				});
 
 			/////////////////////// OSMB ////////////////////////
 			change_osmb();
-			
 		}
 	});
 
@@ -145,11 +147,11 @@
 		});
 	}
 
-	async function change_osmb(url_=null){
+	async function change_osmb(url_ = null) {
 		const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
-		if (url_ == null){
+		if (url_ == null) {
 			new osmBuildings(map).load();
-		}else{
+		} else {
 			new osmBuildings(map).load(url_);
 		}
 	}
@@ -166,8 +168,8 @@
 		informacionParcela.set(feature.properties);
 	}
 
-	function is_active(indice){
-		return layers[indice].mostrar
+	function is_active(indice) {
+		return layers[indice].mostrar;
 	}
 </script>
 
