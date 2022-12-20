@@ -7,6 +7,7 @@
 	let mapElement;
 	let map;
 	// <test>
+	let layers = [];
 	let select = false;
 	let a = {
 		selected: {
@@ -50,27 +51,38 @@
 			map.on('dblclick', function (e) {
 				var coord = e;
 				console.log(coord.latlng.lat + ' ' + coord.latlng.lng);
-				leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
+				//leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
 			});
 
 			fetch(`${assets}/layers/plazacity.geojson`)
 				.then((response) => response.json())
 				.then((json) => {
-					leaflet.geoJSON(json).addTo(map);
-
+					layers.push(json);
+					leaflet.geoJSON(layers[0]).addTo(map);
 					var polygonsBlock = leaflet
-						.geoJson(json, {
+						.geoJson(layers[0], {
 							onEachFeature: popup,
 							style: a.default
 						})
 						.addTo(map);
 				});
-			try {
-				const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
-				new osmBuildings(map).load();
-			} catch (error) {
-				console.log(error);
-			}
+
+			fetch('http://localhost:5173/layers/routes.geojson')
+				.then((response) => response.json())
+				.then((json) => {
+					layers.push(json);
+					// Valor de la segunda capa
+					leaflet.geoJSON(layers[1]).addTo(map);
+					var polygonsBlock = leaflet
+						.geoJson(layers[0], {
+							onEachFeature: popup,
+							style: a.default
+						})
+						.addTo(map);
+				});
+
+			const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
+			new osmBuildings(map).load();
 		}
 	});
 
@@ -101,9 +113,6 @@
 		section.set(1);
 		var feature = event.target.feature;
 		informacionParcela.set(feature.properties);
-		layer.bindPopup(
-			feature.properties.name + '<br><stroke>' + feature.properties.descripcion + '</stroke>'
-		);
 	}
 </script>
 
