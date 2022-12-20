@@ -7,7 +7,6 @@
 	let mapElement;
 	let map;
 	// <test>
-	let layers = [];
 	let select = false;
 	let a = {
 		selected: {
@@ -40,12 +39,6 @@
 				})
 				.addTo(map);
 
-			leaflet
-				.marker([-25.49685812194268, -54.67757642269135])
-				.addTo(map)
-				.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-				.openPopup();
-
 			/*test*/
 
 			map.on('dblclick', function (e) {
@@ -56,11 +49,11 @@
 
 			fetch(`${assets}/layers/plazacity.geojson`)
 				.then((response) => response.json())
-				.then((json) => {
-					layers.push(json);
-					leaflet.geoJSON(layers[0]).addTo(map);
-					var polygonsBlock = leaflet
-						.geoJson(layers[0], {
+				.then((value) => {
+					leaflet.geoJSON(value).addTo(map);
+					//polygonsBlock
+					leaflet
+						.geoJson(value, {
 							onEachFeature: popup,
 							style: a.default
 						})
@@ -69,12 +62,12 @@
 
 			fetch(`${assets}/layers/routes.geojson`)
 				.then((response) => response.json())
-				.then((json) => {
-					layers.push(json);
+				.then((value) => {
 					// Valor de la segunda capa
-					leaflet.geoJSON(layers[1]).addTo(map);
-					var polygonsBlock = leaflet
-						.geoJson(layers[0], {
+					leaflet.geoJSON(value).addTo(map);
+					//polygonsBlock
+					leaflet
+						.geoJson(value, {
 							onEachFeature: popup,
 							style: a.default
 						})
@@ -104,7 +97,6 @@
 
 	onDestroy(async () => {
 		if (map) {
-			console.log('Unloading Leaflet map.');
 			map.remove();
 		}
 	});

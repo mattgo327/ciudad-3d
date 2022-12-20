@@ -1,7 +1,7 @@
 <script>
-	import InfoSection from './InfoSection.svelte';
-	import GuideSection from './GuideSection.svelte';
-	import LayersSection from './LayersSection.svelte';
+	import InfoSection from './SectionInfo.svelte';
+	import GuideSection from './SectionGuides.svelte';
+	import LayersSection from './SectionLayers.svelte';
 
 	export let sectionTitle,
 		sectionValue = 0;
