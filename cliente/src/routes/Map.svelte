@@ -2,6 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { informacionParcela, section } from '../store';
+	import { assets } from '$app/paths';
 
 	let mapElement;
 	let map;
@@ -61,15 +62,6 @@
 				})
 				.addTo(map);
 
-			////////////////////// TESTING ////////////////////////
-			
-			/* 
-			leaflet
-				.marker([-25.49685812194268, -54.67757642269135])
-				.addTo(map)
-				.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-				.openPopup();
-
 			map.on('dblclick', function (e) {
 				var coord = e;
 				console.log(coord.latlng.lat + ' ' + coord.latlng.lng);
@@ -78,26 +70,32 @@
 			
 			/////////////////////// FETCH ////////////////////////
 
-			fetch('http://localhost:5173/layers/plazacity.geojson')
+			fetch(`${assets}/layers/plazacity.geojson`)
 				.then((response) => response.json())
-				.then((json) => {
-					layers[0].json = json;
-					if (is_active(0)){
-						leaflet.geoJSON(layers[0].json,{
+				.then((value) => {
+					leaflet.geoJSON(value).addTo(map);
+					//polygonsBlock
+					leaflet
+						.geoJson(value, {
 							onEachFeature: popup,
 							style: a.default
-						}).addTo(map);
-						change_osmb(layers[0].url);
-					}
+						})
+						.addTo(map);
 				});
 
-			fetch('http://localhost:5173/layers/routes.geojson')
-			.then((response) => response.json())
-			.then((json) => {
-				layers[1].json = json;
-				if (is_active(1)) leaflet.geoJSON(layers[1].json).addTo(map);
-				
-			});
+			fetch(`${assets}/layers/routes.geojson`)
+				.then((response) => response.json())
+				.then((value) => {
+					// Valor de la segunda capa
+					leaflet.geoJSON(value).addTo(map);
+					//polygonsBlock
+					leaflet
+						.geoJson(value, {
+							onEachFeature: popup,
+							style: a.default
+						})
+						.addTo(map);
+				});
 
 			fetch('http://localhost:5173/layers/casa1.geojson')
 			.then((response) => response.json())
@@ -158,7 +156,6 @@
 
 	onDestroy(async () => {
 		if (map) {
-			console.log('Unloading Leaflet map.');
 			map.remove();
 		}
 	});
