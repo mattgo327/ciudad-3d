@@ -1,21 +1,19 @@
 <script>
-	let layers = [
-		{
-			nombre: 'Parcela',
-			mostrar: true // las parcelas se mostraran por defecto
-		},
-		{
-			nombre: 'Rutas',
-			mostrar: false
-		}
-	];
+	import { layers } from '../store';
 
-	function checkbox(element) {
-		let id = element.srcElement.id;
-		let nombre = layers[parseInt(id)].nombre;
-		let mostrar_capa = (layers[parseInt(id)].mostrar = element.srcElement.checked);
+	let layersValue;
 
-		console.log(nombre + ' ' + id + ' ' + mostrar_capa);
+	layers.subscribe((value) => {
+		layersValue = value;
+	});
+
+	function handleCheck(e) {
+		let id = parseInt(e.srcElement.id);
+		let isChecked = e.srcElement.checked;
+		layers.update((value) => {
+			value[id].mostrar = isChecked;
+			return value;
+		});
 	}
 </script>
 
@@ -24,9 +22,9 @@
 		type="checkbox"
 		class="mr-2"
 		id="0"
-		checked
+		checked={layersValue[0].mostrar}
 		on:click={(e) => {
-			checkbox(e);
+			handleCheck(e);
 		}}
 	/>
 	<div class="rounded bg-red-600 h-2 w-2 mr-2" />
@@ -37,8 +35,9 @@
 		type="checkbox"
 		class="mr-2"
 		id="1"
+		checked={layersValue[1].mostrar}
 		on:click={(e) => {
-			checkbox(e);
+			handleCheck(e);
 		}}
 	/>
 	<div class="rounded bg-red-600 h-2 w-2 mr-2" />
