@@ -10,17 +10,17 @@
 	let select = false;
 	const a = {
 		selected: {
-			color: 'red',
-			opacity: 100,
-			fillcolor: 'red',
-			fillOpacity: 1,
+			color: 'green',
+			opacity: 0.5,
+			fillcolor: 'green',
+			fillOpacity: 0,
 			weight: 0.5
 		},
 		default: {
 			color: 'blue',
 			opacity: 1,
 			fillcolor: 'red',
-			fillOpacity: 0.1,
+			fillOpacity: 0,
 			weight: 0.5
 		}
 	};
@@ -49,9 +49,6 @@
 
 			layerGroup = new leaflet.LayerGroup();
 			layerGroup.addTo(map);
-
-			const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
-			new osmBuildings(map).load();
 		}
 	});
 
@@ -116,7 +113,13 @@
 		section.set(1);
 		var feature = event.target.feature;
 		informacionParcela.set(feature.properties);
+		loadModel(feature.properties.name);
 	}
+
+	const loadModel = async (name) => {
+		const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
+		new osmBuildings(map).load(`${assets}/layers/${name}.geojson`);
+	};
 </script>
 
 <div class="h-full w-full z-10" bind:this={mapElement} data-for-rerender={layersValue[0].nombre} />
