@@ -1,0 +1,29 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "casa8",
+				"descripcion": "Lorem Ipsum is simply dummy",
+				"stroke": "#1a5fb4",
+				"stroke-width": 0.1,
+				"stroke-opacity": 1,
+				"fill": "#1a5fb4",
+				"fill-opacity": 0.1
+			},
+			"geometry": {
+				"coordinates": [
+					[
+						[-54.67903984740907, -25.497932345135723],
+						[-54.67904777945789, -25.498025418254244],
+						[-54.67897797743183, -25.498028282041332],
+						[-54.67897163179326, -25.497932345135723],
+						[-54.67903984740907, -25.497932345135723]
+					]
+				],
+				"type": "Polygon"
+			}
+		}
+	]
+}

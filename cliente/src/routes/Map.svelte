@@ -1,36 +1,35 @@
 <script>
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount, afterUpdate } from 'svelte';
 	import { browser } from '$app/environment';
-	import { informacionParcela, section } from '../store';
+	import { informacionParcela, section, layers } from '../store';
+	import { assets } from '$app/paths';
 
 	let mapElement;
 	let map;
-	// <test>
-	let select = false;
-	let a = {
-		selected: {
-			color: 'red',
-			opacity: 100,
-			fillcolor: 'red',
-			fillOpacity: 1,
-			weight: 0.5
-		},
+	let layersValue;
+	const baseLayerStyle = {
 		default: {
 			color: 'blue',
-			opacity: 1,
+			opacity: 0.5,
 			fillcolor: 'red',
-			fillOpacity: 0.1,
+			fillOpacity: 0,
 			weight: 0.5
 		}
 	};
 
-	let manyselect = 0;
-	// </test>
+	let leaflet;
+	let layerGroup;
+	let plazacityLayer;
+	let routesLayer;
+
+	layers.subscribe((value) => {
+		layersValue = value;
+	});
+
 	onMount(async () => {
 		if (browser) {
-			const leaflet = await import('leaflet');
-
-			map = leaflet.map(mapElement).setView([-25.49765, -54.67885], 1700);
+			leaflet = await import('leaflet');
+			map = leaflet.map(mapElement).setView([-25.49765, -54.67885], 1700, 80);
 
 			leaflet
 				.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -39,69 +38,89 @@
 				})
 				.addTo(map);
 
-			leaflet
-				.marker([-25.49685812194268, -54.67757642269135])
-				.addTo(map)
-				.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-				.openPopup();
-
-			/*test*/
-
-			map.on('dblclick', function (e) {
-				var coord = e;
-				console.log(coord.latlng.lat + ' ' + coord.latlng.lng);
-				leaflet.marker([coord.latlng.lat, coord.latlng.lng]).addTo(map);
-			});
-
-			fetch('http://localhost:5173/layers/plazacity.geojson')
-				.then((response) => response.json())
-				.then((json) => {
-					leaflet.geoJSON(json).addTo(map);
-
-					var polygonsBlock = leaflet
-						.geoJson(json, {
-							onEachFeature: popup,
-							style: a.default
-						})
-						.addTo(map);
-				});
+			layerGroup = new leaflet.LayerGroup();
+			layerGroup.addTo(map);
+			if (layersValue[0].mostrar) {
+				if (!plazacityLayer) {
+					fetch(`${assets}/layers/plazacity.geojson`)
+						.then((response) => response.json())
+						.then((data) => {
+							plazacityLayer = new leaflet.GeoJSON(data, {
+								onEachFeature: onFeatureClick,
+								style: baseLayerStyle.default
+							});
+							layerGroup.addLayer(plazacityLayer);
+						});
+				} else if (!layerGroup.hasLayer(plazacityLayer)) {
+					layerGroup.addLayer(plazacityLayer);
+				}
+			} else {
+				if (plazacityLayer) {
+					layerGroup.removeLayer(plazacityLayer);
+				}
+			}
 		}
 	});
 
-	function popup(feature, layer) {
+	afterUpdate(async () => {
+		if (leaflet) {
+			if (layersValue[0].mostrar) {
+				if (!plazacityLayer) {
+					fetch(`${assets}/layers/plazacity.geojson`)
+						.then((response) => response.json())
+						.then((data) => {
+							plazacityLayer = new leaflet.GeoJSON(data, {
+								onEachFeature: onFeatureClick,
+								style: baseLayerStyle.default
+							});
+							layerGroup.addLayer(plazacityLayer);
+						});
+				} else if (!layerGroup.hasLayer(plazacityLayer)) {
+					layerGroup.addLayer(plazacityLayer);
+				}
+			} else {
+				if (plazacityLayer) {
+					layerGroup.removeLayer(plazacityLayer);
+				}
+			}
+
+			if (layersValue[1].mostrar) {
+				if (!routesLayer) {
+					fetch(`${assets}/layers/routes.geojson`)
+						.then((response) => response.json())
+						.then((value) => {
+							routesLayer = new leaflet.GeoJSON(value);
+							layerGroup.addLayer(routesLayer);
+						});
+				} else if (!layerGroup.hasLayer(routesLayer)) {
+					layerGroup.addLayer(routesLayer);
+				}
+			} else {
+				if (routesLayer) {
+					layerGroup.removeLayer(routesLayer);
+				}
+			}
+		}
+	});
+
+	function onFeatureClick(feature, layer) {
 		layer.on({
 			click: (e) => {
-				select = !select;
-				if (select && manyselect == 0) {
-					layer.setStyle(a.selected);
-					manyselect = 1;
-					to_do(e, layer, select);
-				} else {
-					layer.setStyle(a.default);
-					manyselect = 0;
-				}
+				section.set(1);
+				const properties = e.target.feature.properties;
+				informacionParcela.set(properties);
+				loadModel(properties.name);
 			}
 		});
 	}
 
-	onDestroy(async () => {
-		if (map) {
-			console.log('Unloading Leaflet map.');
-			map.remove();
-		}
-	});
-
-	function to_do(event, layer, is_selected) {
-		section.set(1);
-		var feature = event.target.feature;
-		informacionParcela.set(feature.properties);
-		layer.bindPopup(
-			feature.properties.name + '<br><stroke>' + feature.properties.descripcion + '</stroke>'
-		);
-	}
+	const loadModel = async (name) => {
+		const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
+		new osmBuildings(map).load(`${assets}/layers/${name}.geojson`);
+	};
 </script>
 
-<div class="h-full w-full z-10" bind:this={mapElement} />
+<div class="h-full w-full z-10" bind:this={mapElement} data-for-rerender={layersValue[0].nombre} />
 
 <style>
 	@import 'leaflet/dist/leaflet.css';
