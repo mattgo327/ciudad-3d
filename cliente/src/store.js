@@ -5,7 +5,7 @@ export const informacionParcela = writable(null);
 export const layers = writable([
 	{
 		nombre: 'Parcela',
-		mostrar: false // las parcelas se mostraran por defecto
+		mostrar: false
 	},
 	{
 		nombre: 'Rutas',

@@ -1,0 +1,30 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "casa6",
+				"descripcion": "Lorem Ipsum is simply dummy",
+				"stroke": "#1a5fb4",
+				"stroke-width": 0.1,
+				"stroke-opacity": 1,
+				"fill": "#1a5fb4",
+				"fill-opacity": 0.1
+			},
+			"geometry": {
+				"coordinates": [
+					[
+						[-54.67900164436122, -25.497687341509888],
+						[-54.679033547458744, -25.497831320526544],
+						[-54.67876946070636, -25.4978409191214],
+						[-54.67882263253516, -25.497708138488633],
+						[-54.6788899835195, -25.49766654452627],
+						[-54.67900164436122, -25.497687341509888]
+					]
+				],
+				"type": "Polygon"
+			}
+		}
+	]
+}
