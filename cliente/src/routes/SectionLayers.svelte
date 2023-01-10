@@ -11,7 +11,7 @@
 		let id = parseInt(e.srcElement.id);
 		let isChecked = e.srcElement.checked;
 		layers.update((value) => {
-			value[id].mostrar = isChecked;
+			value[id].show = isChecked;
 			return value;
 		});
 	}
@@ -22,7 +22,7 @@
 		type="checkbox"
 		class="mr-2"
 		id="0"
-		checked={layersValue[0].mostrar}
+		checked={layersValue[0].show}
 		on:click={(e) => {
 			handleCheck(e);
 		}}
@@ -35,7 +35,7 @@
 		type="checkbox"
 		class="mr-2"
 		id="1"
-		checked={layersValue[1].mostrar}
+		checked={layersValue[1].show}
 		on:click={(e) => {
 			handleCheck(e);
 		}}
