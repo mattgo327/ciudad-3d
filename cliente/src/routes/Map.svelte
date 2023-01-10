@@ -7,20 +7,9 @@
 	let mapElement;
 	let map;
 	let layersValue;
-	const baseLayerStyle = {
-		default: {
-			color: 'blue',
-			opacity: 0.5,
-			fillcolor: 'red',
-			fillOpacity: 0,
-			weight: 0.5
-		}
-	};
-
 	let leaflet;
 	let layerGroup;
-	let plazacityLayer;
-	let routesLayer;
+	let layerObjects = [null, null];
 
 	layers.subscribe((value) => {
 		layersValue = value;
@@ -40,70 +29,40 @@
 
 			layerGroup = new leaflet.LayerGroup();
 			layerGroup.addTo(map);
-			if (layersValue[0].mostrar) {
-				if (!plazacityLayer) {
-					fetch(`${assets}/layers/plazacity.geojson`)
-						.then((response) => response.json())
-						.then((data) => {
-							plazacityLayer = new leaflet.GeoJSON(data, {
-								onEachFeature: onFeatureClick,
-								style: baseLayerStyle.default
-							});
-							layerGroup.addLayer(plazacityLayer);
-						});
-				} else if (!layerGroup.hasLayer(plazacityLayer)) {
-					layerGroup.addLayer(plazacityLayer);
-				}
-			} else {
-				if (plazacityLayer) {
-					layerGroup.removeLayer(plazacityLayer);
-				}
-			}
 		}
 	});
+
+	const updateLayer = async (index, onFeatureClick = null) => {
+		const { show, name, style } = layersValue[index];
+		if (show) {
+			if (!layerObjects[index]) {
+				fetch(`${assets}/layers/${name}.geojson`)
+					.then((response) => response.json())
+					.then((data) => {
+						layerObjects[index] = new leaflet.GeoJSON(data, {
+							onEachFeature: onFeatureClick,
+							style
+						});
+						layerGroup.addLayer(layerObjects[index]);
+					});
+			} else if (!layerGroup.hasLayer(layerObjects[index])) {
+				layerGroup.addLayer(layerObjects[index]);
+			}
+		} else {
+			if (layerObjects[index]) {
+				layerGroup.removeLayer(layerObjects[index]);
+			}
+		}
+	};
 
 	afterUpdate(async () => {
 		if (leaflet) {
-			if (layersValue[0].mostrar) {
-				if (!plazacityLayer) {
-					fetch(`${assets}/layers/plazacity.geojson`)
-						.then((response) => response.json())
-						.then((data) => {
-							plazacityLayer = new leaflet.GeoJSON(data, {
-								onEachFeature: onFeatureClick,
-								style: baseLayerStyle.default
-							});
-							layerGroup.addLayer(plazacityLayer);
-						});
-				} else if (!layerGroup.hasLayer(plazacityLayer)) {
-					layerGroup.addLayer(plazacityLayer);
-				}
-			} else {
-				if (plazacityLayer) {
-					layerGroup.removeLayer(plazacityLayer);
-				}
-			}
-
-			if (layersValue[1].mostrar) {
-				if (!routesLayer) {
-					fetch(`${assets}/layers/routes.geojson`)
-						.then((response) => response.json())
-						.then((value) => {
-							routesLayer = new leaflet.GeoJSON(value);
-							layerGroup.addLayer(routesLayer);
-						});
-				} else if (!layerGroup.hasLayer(routesLayer)) {
-					layerGroup.addLayer(routesLayer);
-				}
-			} else {
-				if (routesLayer) {
-					layerGroup.removeLayer(routesLayer);
-				}
-			}
+			updateLayer(0, onFeatureClick);
+			updateLayer(1);
 		}
 	});
 
-	function onFeatureClick(feature, layer) {
+	const onFeatureClick = (feature, layer) => {
 		layer.on({
 			click: (e) => {
 				section.set(1);
@@ -112,7 +71,7 @@
 				loadModel(properties.name);
 			}
 		});
-	}
+	};
 
 	const loadModel = async (name) => {
 		const osmBuildings = (await import('osmbuildings/dist/OSMBuildings-Leaflet')).OSMBuildings;
