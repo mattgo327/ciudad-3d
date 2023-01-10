@@ -7,25 +7,16 @@
 	let mapElement;
 	let map;
 	let layersValue;
-	let select = false;
-	const a = {
-		selected: {
-			color: 'green',
-			opacity: 0.5,
-			fillcolor: 'green',
-			fillOpacity: 0,
-			weight: 0.5
-		},
+	const baseLayerStyle = {
 		default: {
 			color: 'blue',
-			opacity: 1,
+			opacity: 0.5,
 			fillcolor: 'red',
 			fillOpacity: 0,
 			weight: 0.5
 		}
 	};
 
-	let manyselect = 0;
 	let leaflet;
 	let layerGroup;
 	let plazacityLayer;
@@ -49,6 +40,25 @@
 
 			layerGroup = new leaflet.LayerGroup();
 			layerGroup.addTo(map);
+			if (layersValue[0].mostrar) {
+				if (!plazacityLayer) {
+					fetch(`${assets}/layers/plazacity.geojson`)
+						.then((response) => response.json())
+						.then((data) => {
+							plazacityLayer = new leaflet.GeoJSON(data, {
+								onEachFeature: onFeatureClick,
+								style: baseLayerStyle.default
+							});
+							layerGroup.addLayer(plazacityLayer);
+						});
+				} else if (!layerGroup.hasLayer(plazacityLayer)) {
+					layerGroup.addLayer(plazacityLayer);
+				}
+			} else {
+				if (plazacityLayer) {
+					layerGroup.removeLayer(plazacityLayer);
+				}
+			}
 		}
 	});
 
@@ -60,8 +70,8 @@
 						.then((response) => response.json())
 						.then((data) => {
 							plazacityLayer = new leaflet.GeoJSON(data, {
-								onEachFeature: popup,
-								style: a.default
+								onEachFeature: onFeatureClick,
+								style: baseLayerStyle.default
 							});
 							layerGroup.addLayer(plazacityLayer);
 						});
@@ -93,27 +103,15 @@
 		}
 	});
 
-	function popup(feature, layer) {
+	function onFeatureClick(feature, layer) {
 		layer.on({
 			click: (e) => {
-				select = !select;
-				if (select && manyselect == 0) {
-					layer.setStyle(a.selected);
-					manyselect = 1;
-					to_do(e, layer, select);
-				} else {
-					layer.setStyle(a.default);
-					manyselect = 0;
-				}
+				section.set(1);
+				const properties = e.target.feature.properties;
+				informacionParcela.set(properties);
+				loadModel(properties.name);
 			}
 		});
-	}
-
-	function to_do(event, layer, is_selected) {
-		section.set(1);
-		var feature = event.target.feature;
-		informacionParcela.set(feature.properties);
-		loadModel(feature.properties.name);
 	}
 
 	const loadModel = async (name) => {
