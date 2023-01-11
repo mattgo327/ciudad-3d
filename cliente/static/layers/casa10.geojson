@@ -4,8 +4,8 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "casa10",
-				"descripcion": "Lorem Ipsum is simply dummy",
+				"name": "Cinemas Plaza",
+				"descripcion": "Cine de Plaza City, abierto todos los dias.",
 				"stroke": "#1a5fb4",
 				"stroke-width": 0.1,
 				"stroke-opacity": 1,
