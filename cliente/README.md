@@ -1,38 +1,42 @@
-# create-svelte
+# Ejecutar la aplicación localmente
 
-verything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Para ejecutar la aplicación la aplicación de forma local hay que seguir los siguientes pasos:
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
+1. Clonar el repositorio
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+git clone <url repositorio>
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+2. Ejecutar desde la consola:
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+cd cliente
+pnpm install
+pnpm dev
 ```
 
-## Building
+Esto como resultado abrirá una solapa en [http://localhost:`5173`](http://localhost:5173).
 
-To create a production version of your app:
+## Entorno Producción
+
+En el caso de realizarlo en un entorno de producción, se siguen los siguientes pasos:
+
+1. Clonar el repositorio
 
 ```bash
-npm run build
+git clone <url repositorio>
 ```
 
-You can preview the production build with `npm run preview`.
+2. Ejecutar desde la consola:
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+```bash
+cd cliente
+pnpm install
+```
+
+3. Realizar el build con el siguiente comando
+
+```bash
+pnpm build
+```
