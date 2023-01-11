@@ -8,7 +8,7 @@ La API proporciona acceso a datos sobre cada parcela.
 
 ### Tecnologías usadas
 
-La página web está desarrollada con el framework [SvelteKit](https://kit.svelte.dev/) y utilizamos el framework [CSS Tailwind](https://tailwindcss.com/) para estilizar la interfaz de usuario. Además, hemos utilizado la librería [Leaflet](https://leafletjs.com/) para mostrar y dar funcionalidad al mapa junto a los modelos 3D que provienen de [OSM Buildings](https://osmbuildings.org/). Para el despliegue se utiliza el servicio de [Vercel](https://vercel.com/).
+La página web está desarrollada con el framework [SvelteKit](https://kit.svelte.dev/) y utilizamos [CSS Tailwind](https://tailwindcss.com/) para estilizar la interfaz de usuario. Además, hemos utilizado la librería [Leaflet](https://leafletjs.com/) para mostrar y dar funcionalidad al mapa junto a los modelos 3D que provienen de [OSM Buildings](https://osmbuildings.org/). Para el despliegue se utiliza el servicio de [Vercel](https://vercel.com/).
 
 ## API
 
