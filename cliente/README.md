@@ -11,7 +11,7 @@ git clone <url repositorio>
 2. Ejecutar desde la consola:
 
 ```bash
-cd frontend
+cd cliente
 pnpm install
 pnpm dev
 ```
@@ -31,7 +31,7 @@ git clone <url repositorio>
 2. Ejecutar desde la consola:
 
 ```bash
-cd frontend
+cd cliente
 pnpm install
 ```
 
