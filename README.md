@@ -17,3 +17,6 @@ Dirección:
 Los endpoints disponibles son:
 
 - GET `/parcel`: Devuelve la información sobre la parcela
+- POST`/parcel`: Agrega nueva información sobre una parcela/
+- PUT `/parcel`: Actuliza la información sobre la parcela.
+- DELETE `/parcel`: Elimina una parcela.
